@@ -36,15 +36,16 @@ This repo is a basic example configuring CMake and intellisense on vscode. The c
     ```
 2. `cmake-kits.json`  
     Configuration of vscode extension cmake-tools where is toolchain file from stm32-cmake. Since we use toolchain file here, please do not specified `compliers` here, which leads to confliction.  
-    ```json
+    ```json  
     [{
     "name": "C/C++ cmake-kits: arm-none-eabi 9.3.1",
     "toolchainFile":"/usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake"
   }]
     ```   
-3. `tasks.json`(optional)  
+    
+3. `tasks.json` (optional)  
     Configuration for st-flash.  
-    ```json
+    ```json  
     {
     "tasks":  [       
         {
