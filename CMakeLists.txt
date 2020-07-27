@@ -32,7 +32,7 @@ ENDIF()
 
 IF(NOT STM32Cube_DIR)
 message(FATAL_ERROR "please specify -DSTM32Cube_DIR=<path-to-STM32Cube_DIR> when configuring\n
-                     i.e. /home/XXX/STM32Cube/Repository/STM32Cube_FW_F4_V1.25.0>")
+                     i.e. /home/XXX/STM32Cube/Repository/STM32Cube_FW_F4_V1.25.0")
 ENDIF()
 
 IF(NOT STM32_LINKER_SCRIPT)
