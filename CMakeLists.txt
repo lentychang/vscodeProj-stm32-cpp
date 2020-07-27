@@ -22,7 +22,7 @@ ENDIF()
 
 IF(NOT CMAKE_TOOLCHAIN_FILE)
 message(FATAL_ERROR "Please specify -DCMAKE_TOOLCHAIN_FILE=<path-to-gcc_stm32.cmake  when configuring\n
-                     i.e. /home/XXX/stm32-cmake/cmake/gcc_stm32.cmake")
+                     i.e. /usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake")
 ENDIF()
 
 IF(NOT STM32_CHIP)
@@ -32,7 +32,7 @@ ENDIF()
 
 IF(NOT STM32Cube_DIR)
 message(FATAL_ERROR "please specify -DSTM32Cube_DIR=<path-to-STM32Cube_DIR> when configuring\n
-                     i.e. /home/XXX/STM32Cube/Repository/STM32Cube_FW_F4_V1.25.0")
+                     i.e. /opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.25.0")
 ENDIF()
 
 IF(NOT STM32_LINKER_SCRIPT)
