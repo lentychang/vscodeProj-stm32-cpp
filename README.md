@@ -39,8 +39,7 @@ This repo is a basic example configuring CMake and intellisense on vscode. The c
     ```json  
     [{
     "name": "C/C++ cmake-kits: arm-none-eabi 9.3.1",
-    "toolchainFile":"/usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake"
-  }]
+    "toolchainFile":"/usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake"}]  
     ```   
     
 3. `tasks.json` (optional)  
