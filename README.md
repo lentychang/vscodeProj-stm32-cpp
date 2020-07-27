@@ -41,9 +41,9 @@ This repo is a basic example configuring CMake and intellisense on vscode. The c
     "name": "C/C++ cmake-kits: arm-none-eabi 9.3.1",
     "toolchainFile":"/usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake"
   }]
-    ```
+    ```   
 3. `tasks.json`(optional)  
-    Configuration for st-flash.
+    Configuration for st-flash.  
     ```json
     {
     "tasks":  [       
@@ -64,7 +64,7 @@ This repo is a basic example configuring CMake and intellisense on vscode. The c
     ],
     "version": "2.0.0"
     }
-    ```
+    ```  
 
 4. `c_cpp_properties.json` (optional)  
     Configuration for intellisense. Please update `includePath`, `defines`, `c/cppStandards`  
