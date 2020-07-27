@@ -1,13 +1,13 @@
 {
-    "cmake.generator": "Ninja",
+    "cmake.generator": "Unix Makefiles",
     "cmake.configureEnvironment": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "on"
     },
     "cmake.configureSettings": {
-        "TOOLCHAIN_PREFIX": "/home/lenty/opt/ARMtoolchain/gcc-arm-none-eabi-9-2020-q2-update",
+        "TOOLCHAIN_PREFIX": "/usr/local/gcc-arm-none-eabi-9-2020-q2-update",
         "TARGET_TRIPLET":"arm-none-eabi",
-        "STM32_CHIP": "<STM32_CHIP_MODEL_NAME>",
-        "STM32Cube_DIR": "<PATH_TO_STM32Cube>/Repository/STM32Cube_FW_F4_V1.25.0",
+        "STM32_CHIP": "STM32F446RE",
+        "STM32Cube_DIR": "/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.25.0",
         "STM32_LINKER_SCRIPT":"${workspaceFolder}/src/STM32F446RETX_FLASH.ld"
     },
     "C_Cpp.default.intelliSenseMode": "gcc-arm"

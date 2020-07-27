@@ -4,10 +4,10 @@
             "name": "Linux-arm-cross-platform",
             "includePath": [
                 "${workspaceFolder}/**",
-                "<PATH_TO_STM32Cube>/Repository/STM32Cube_FW_F4_V1.25.0/**"
+                "/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.25.0/**"
             ],
-            "defines": ["<STM32_CHIP_MODELNAME>","USE_HAL_DRIVER"],
-            "compilerPath": "<path_to_arm-none-eabi-g++>",
+            "defines": ["STM32F446RE","USE_HAL_DRIVER"],
+            "compilerPath": "/usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-g++",
             "cStandard": "gnu11",
             "cppStandard": "gnu++14",
             "compileCommands": "${workspaceFolder}/build/compile_commands.json",

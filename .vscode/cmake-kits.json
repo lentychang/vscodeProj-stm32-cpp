@@ -1,4 +1,4 @@
 [{
     "name": "C/C++ CMake-Kit for arm-none-eabi 9.3.1",
-    "toolchainFile":"<Path_TO_stm32-cmake>/cmake/gcc_stm32.cmake"
+    "toolchainFile":"/usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake"
   }]
