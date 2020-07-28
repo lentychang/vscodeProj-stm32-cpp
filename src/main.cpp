@@ -47,7 +47,7 @@
 
 // #ifdef __cplusplus
 // extern "C" {
-#include "main.h"
+// #include "main.h"
 // #endif
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
@@ -108,8 +108,6 @@ int main(void) {
     /* USER CODE END WHILE */
     if (HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == GPIO_PIN_RESET) {
       while (1) {
-        HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-        HAL_Delay(500);
         HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
         HAL_Delay(500);
       }

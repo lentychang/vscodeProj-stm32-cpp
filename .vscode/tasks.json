@@ -1,9 +1,10 @@
 {
+    "version": "2.0.0",
     "tasks": [
         {
             "type": "shell",
-            "label": "build All",
-            "command": "make",
+            "label": "build",
+            "command": "cmake --build ${workspaceFolder}/build --config Debug",
             "args": [
             
             ],
@@ -32,6 +33,5 @@
             },
             "problemMatcher": []
      }
-    ],
-    "version": "2.0.0"
+    ]
 }

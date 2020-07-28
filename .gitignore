@@ -1,5 +1,8 @@
 # build folder
 build
+
+# cortex debug data
+.vscode/.cortex-debug.*
 # Prerequisites
 *.d
 

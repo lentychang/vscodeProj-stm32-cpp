@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
-PROJECT(stm32_ex1 C CXX ASM)
+PROJECT(vscodeProj-stm32-cpp C CXX ASM)
 
 
 # This is for lazy configuration to use cmake from CLI
