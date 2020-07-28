@@ -1,5 +1,9 @@
 This repo is a basic example configuring CMake and intellisense on vscode. The code itself is blinking LED and tested with STM32F446RE-nucleo
 
+# Required VS Code extensions
+- CMake-Tools
+- Cortex-Debug
+
 # Setup project folder  
 0. Clone [ObKo/stm32-cmake](https://github.com/ObKo/stm32-cmake.git) somewhere
 1. Configure and generated code from STM32CubeMX.
@@ -27,7 +31,7 @@ This repo is a basic example configuring CMake and intellisense on vscode. The c
                 "cStandard": "gnu11",
                 "cppStandard": "gnu++14",
                 "compileCommands": "${workspaceFolder}/build/compile_commands.json",
-                "intelliSenseMode": "clang-x64",
+                "intelliSenseMode": "gcc-arm",
                 "configurationProvider": "ms-vscode.cmake-tools"
             }
         ],
@@ -38,7 +42,7 @@ This repo is a basic example configuring CMake and intellisense on vscode. The c
     Configuration of vscode extension cmake-tools where is toolchain file from stm32-cmake. Since we use toolchain file here, please do not specified `compliers` here, which leads to confliction.  
     ```json  
     [{
-    "name": "C/C++ cmake-kits: arm-none-eabi 9.3.1",
+    "name": "C/C++ CMake-Kit for arm-none-eabi 9.3.1",
     "toolchainFile":"/usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake"}]  
     ```   
     
@@ -46,29 +50,47 @@ This repo is a basic example configuring CMake and intellisense on vscode. The c
     Configuration for st-flash.  
     ```json  
     {
-    "tasks":  [       
-        {
-            "type": "shell",
-            "label": "Flash program",
-            "command": "st-flash",
-            "args": [
-                "write",
-                "${workspaceFolderBasename}.bin",
-                "0x8000000"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}/build"
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "type": "shell",
+                "label": "build",
+                "command": "cmake --build ${workspaceFolder}/build --config Debug",
+                "args": [
+                
+                ],
+                "options": {
+                    "cwd": "${workspaceFolder}/build"
+                },
+                "problemMatcher": [
+                    "$gcc"
+                ],
+                "group": {
+                    "kind": "build",
+                    "isDefault": true
+                }
             },
-            "problemMatcher": []
-     }
-    ],
-    "version": "2.0.0"
+            {
+                "type": "shell",
+                "label": "Flash program",
+                "command": "st-flash",
+                "args": [
+                    "write",
+                    "${workspaceFolderBasename}.bin",
+                    "0x8000000"
+                ],
+                "options": {
+                    "cwd": "${workspaceFolder}/build"
+                },
+                "problemMatcher": []
+        }
+        ]
     }
     ```  
 
 4. `c_cpp_properties.json` (optional)  
     Configuration for intellisense. Please update `includePath`, `defines`, `c/cppStandards`  
-    ```json
+    ```json  
     {
     "configurations": [
         {
@@ -82,7 +104,7 @@ This repo is a basic example configuring CMake and intellisense on vscode. The c
             "cStandard": "gnu11",
             "cppStandard": "gnu++14",
             "compileCommands": "${workspaceFolder}/build/compile_commands.json",
-            "intelliSenseMode": "clang-x64",
+            "intelliSenseMode": "gcc-arm",
             "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
@@ -90,6 +112,36 @@ This repo is a basic example configuring CMake and intellisense on vscode. The c
     }
     ```
 
+5. `launch.json` for debugger  
+    ```json  
+    {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "cortex-debug",
+                "type": "cortex-debug",
+                "request": "launch",
+                "cwd": "${workspaceRoot}/build",
+                "executable": "${workspaceRoot}/build/${workspaceFolderBasename}",
+                "servertype": "openocd",
+                "interface": "swd",
+                "device": "STM32F446RE",
+                "runToMain": true,
+                "preRestartCommands": [
+                    "target remote localhost:3333",
+                    "add-symbol-file ${workspaceFolderBasename}",
+                    "enable breakpoint",
+                    "monitor reset"
+                ],
+                "armToolchainPath": "/usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin",
+                "configFiles": ["/usr/local/share/openocd/scripts/board/st_nucleo_f4.cfg"],
+                "searchDir":["/usr/local/share/openocd/scripts/board/"],
+                "svdFile": "${workspaceFolder}/etc/STM32F446.svd",
+                "preLaunchTask": "build"
+            }
+        ]
+    }
+    ```
+
 ## TODO
-- Using STM32Programmer to 
-- Debugger configuring
+- Using STM32Programmer to flash
