@@ -143,5 +143,18 @@ This repo is a basic example configuring CMake and intellisense on vscode. The c
     }
     ```
 
+# Semihosting  
+If you want to use printf to print message on host's terminal, or scanf from host's keyboard.  
+## Steps  
+0. enabling semihosting in openocd has been done in the launch.json (line25: `monitor arm semihosting enable`).  You can remove it if you don't need semihosting.
+1. uncomment `target_link_options` in CMakeLists.txt  
+2. Include header `stdio.h` in the source file  
+3. Exclude syscall.c from compilation, which means, temove it from PROJECT_SOURCES in CMakeList.txt  
+
+For CMake version before 3.14 use the following setting in CMakeLists.txt  
+```CMake   
+set_property(TARGET ${CMAKE_PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -specs=rdimon.specs -lc -lrdimon")  
+```  
+
 ## TODO
 - Using STM32Programmer to flash

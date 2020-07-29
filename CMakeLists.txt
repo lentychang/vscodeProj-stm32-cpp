@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 PROJECT(vscodeProj-stm32-cpp C CXX ASM)
 
 
@@ -65,6 +65,11 @@ TARGET_INCLUDE_DIRECTORIES(
     ${STM32HAL_INCLUDE_DIR}
     include
 )
+
+# For Semihosting uncomment below and also exclude src/syscall.c from PROJECT_SOURCES 
+# target_link_options(${CMAKE_PROJECT_NAME} PUBLIC "-specs=rdimon.specs" 
+#                                                  "-lc" 
+#                                                  "-lrdimon")
 
 STM32_SET_TARGET_PROPERTIES(${CMAKE_PROJECT_NAME})
 STM32_ADD_HEX_BIN_TARGETS(${CMAKE_PROJECT_NAME})
