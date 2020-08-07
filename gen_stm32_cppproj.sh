@@ -23,6 +23,6 @@ trash $proj_name
 echo "Unneccessary files are collected in new directory $proj_name, which is thrown to trash!"
 mkdir build
 
-cp -r /usr/local/src/vscodeProj-stm-cpp/.vscode .vscode
-cp /usr/local/src/vscodeProj-stm-cpp/CMakeLists.txt CMakeLists.txt
+cp -r /usr/local/src/vscodeProj-stm32-cpp/.vscode .vscode
+cp /usr/local/src/vscodeProj-stm32-cpp/CMakeLists.txt CMakeLists.txt
 
