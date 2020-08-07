@@ -45,17 +45,17 @@ FIND_PACKAGE(CMSIS REQUIRED)
 # Add the components you need
 FIND_PACKAGE(STM32HAL COMPONENTS gpio tim uart REQUIRED)
 
+ADD_EXECUTABLE(${CMAKE_PROJECT_NAME} ${PROJECT_SOURCES} ${CMSIS_SOURCES} ${STM32HAL_SOURCES})
+
 # add all source files from src. 
 # Do not add system_stm32f4xx.c which will be included from ${CMSIS_SOURCES}
-SET(PROJECT_SOURCES
+target_sources(${CMAKE_PROJECT_NAME}
+    PRIVATE
     src/main.cpp
     src/stm32f4xx_hal_msp.c    
     src/stm32f4xx_it.c
-    src/syscalls.c
     src/sysmem.c
 )
-
-ADD_EXECUTABLE(${CMAKE_PROJECT_NAME} ${PROJECT_SOURCES} ${CMSIS_SOURCES} ${STM32HAL_SOURCES})
 
 TARGET_INCLUDE_DIRECTORIES(
     ${CMAKE_PROJECT_NAME}
@@ -66,7 +66,11 @@ TARGET_INCLUDE_DIRECTORIES(
     include
 )
 
-# For Semihosting uncomment below and also exclude src/syscall.c from PROJECT_SOURCES 
+# For Semihosting comment below and also uncomment target_link_options
+TARGET_SOURCES(${CMAKE_PROJECT_NAME}
+    PRIVATE
+    src/syscalls.c
+)
 # target_link_options(${CMAKE_PROJECT_NAME} PUBLIC "-specs=rdimon.specs" 
 #                                                  "-lc" 
 #                                                  "-lrdimon")
