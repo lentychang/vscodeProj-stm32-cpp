@@ -62,8 +62,8 @@ Please modify according to the path you installed these tools
     "toolchainFile":"/usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake"}]  
     ```   
     
-3. `c_cpp_properties.json` (optional)  
-    Configuration for intellisense. Please update `includePath`, `defines`, `c/cppStandards`  
+3. `c_cpp_properties.json`   
+    Configuration for intellisense. Please update `includePath`, `defines`, `c/cppStandards`, `compilerPath`  
     ps. for cStandard, you should always use gnu standard instead of  c standard, since STM32Cube HAL is written with gnu11, not c11 standard.
     ```json  
     {
@@ -139,6 +139,10 @@ For CMake version before 3.14 use the following setting in CMakeLists.txt
 ```CMake   
 set_property(TARGET ${CMAKE_PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -specs=rdimon.specs -lc -lrdimon")  
 ```  
+
+# Note  
+- C/C++ intellisense (ms-vscode.cpptools) v0.30.0-insider Bug [#5906](https://github.com/microsoft/vscode-cpptools/issues/5906)
+    It will fail autocomplete, you can use disable extension autoupdate and use version 0.29.0. It might be bug from CMakeTool.
 
 ## TODO
 - Using STM32Programmer to flash
