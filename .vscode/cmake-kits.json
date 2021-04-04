@@ -1,4 +1,9 @@
 [{
     "name": "C/C++ CMake-Kit for arm-none-eabi 9.3.1",
-    "toolchainFile":"/usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake"
+    "toolchainFile":"/usr/local/src/stm32-cmake/cmake/stm32_gcc.cmake",
+    "compilers": {      
+      "CC":"/usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gcc-9.3.1",
+      "C": "/usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gcc-9.3.1",
+      "CXX":"/usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-g++"
+    }
   }]

@@ -10,7 +10,7 @@ Please modify according to the path you installed these tools
 - openocd(apt): `/usr/local/share/openocd`
 - gcc-arm-none-eabi toolchain(download): `/usr/local/gcc-arm-none-eabi-9-2020-q2-update`
 - stlink-tools
-- STM32CubeMX package: `/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.25.0`
+- STM32CubeMX package: `/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.26.1`
 
 
 # 0. Installation
@@ -46,9 +46,13 @@ Please modify according to the path you installed these tools
     {
     "cmake.generator": "Unix Makefiles",
     "cmake.configureSettings": {
-        "TOOLCHAIN_PREFIX": "/usr/local/gcc-arm-none-eabi-9-2020-q2-update",
+        "CMAKE_MODULE_PATH":"/usr/local/src/stm32-cmake/cmake",
+        "STM32_TOOLCHAIN_PATH":"/usr/local/gcc-arm-none-eabi-9-2020-q2-update",
+        "STM32_TARGET_TRIPLET":"arm-none-eabi",
         "STM32_CHIP": "STM32F446RE",
-        "STM32Cube_DIR": "/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.25.0",
+        "STM32Cube_DIR":"/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.26.1",
+        "STM32_CUBE_F4_PATH":"/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.26.1",
+        "STM32_LINKER_SCRIPT":"${workspaceFolder}/STM32F446RETX_FLASH.ld"
     },
     "cortex-debug.armToolchainPath": "/usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin",
     "cortex-debug.openocdPath": "/usr/local/bin/openocd"
@@ -59,7 +63,13 @@ Please modify according to the path you installed these tools
     ```json  
     [{
     "name": "C/C++ CMake-Kit for arm-none-eabi 9.3.1",
-    "toolchainFile":"/usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake"}]  
+    "toolchainFile":"/usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake",
+    "compilers": {      
+      "CC":"/usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gcc-9.3.1",
+      "C": "/usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-gcc-9.3.1",
+      "CXX":"/usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-g++"
+      }
+    }]  
     ```   
     
 3. `c_cpp_properties.json`   
@@ -72,7 +82,7 @@ Please modify according to the path you installed these tools
             "name": "Linux-arm-cross-platform",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.25.0/**"
+                "/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.26.1/**"
             ],
             "defines": ["STM32F446xx","USE_HAL_DRIVER"],
             "compilerPath": "/usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin/arm-none-eabi-g++",
@@ -99,7 +109,28 @@ Please modify according to the path you installed these tools
     }
     ```
 
-# 2. Convert STM32CubeIDE project to VS Code CMake project
+# 2. Update CMakeLists.txt
+1. Find corresponded targets from HAL and CMSIS that need to be linked.
+
+# Semihosting  
+If you want to use printf to print message on host's terminal, or scanf from host's keyboard.  
+   
+0. enabling semihosting in openocd has been done in the launch.json (line25: `monitor arm semihosting enable`).  You can remove it if you don't need semihosting.  
+1. uncomment `target_link_options` in CMakeLists.txt 
+2. comment  `target_sources` with `syscall.c` in CMakeLists.txt 
+3. Include header `stdio.h` in the source file and add `initialize_monitor_handle();` before while loop
+4. Now printf should work. The printed out message is shown in **OUTPUT** panel  
+  
+ps. If you enable semihosting here, be aware that, the device will hang due to monitor_handle and will not start at all, unless you use debugger to run. So, if you want to test you program without debugger, remember to remove `initialize_monitor_handle();` and `printf` as well as revert the CMakeLists.txt
+
+For CMake version before 3.14 use the following setting in CMakeLists.txt  
+```CMake   
+set_property(TARGET ${CMAKE_PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -specs=rdimon.specs -lc -lrdimon")  
+```  
+
+---
+# Old Configuration - If config with STM32CubeMX
+# Convert STM32CubeIDE project to VS Code CMake project
 1. Use STM32CubeMX to generate STM32CubeIDE proejct  
     If you select other type of projects, you have to modify gen_stm32_cppproj.sh to remove corresponding project files.
 2. Now you can execute `gen_stm32_cppproj` from CLI at the root directory of your STM32CubeMX_generated_project. It renames directories and removes unnecessary files.
@@ -122,31 +153,6 @@ If you don't want to use this repository, here are some steps to use stm32-cmake
 5. Finish the configuration below.
 6. Relauch vscode, open Command Pallette, choose `CMake: Select a kit`, then it should automatically configure.
 7. After flashing the code and restart your target, LED should blink after press user_button.
-
-
-# Semihosting  
-If you want to use printf to print message on host's terminal, or scanf from host's keyboard.  
-   
-0. enabling semihosting in openocd has been done in the launch.json (line25: `monitor arm semihosting enable`).  You can remove it if you don't need semihosting.  
-1. uncomment `target_link_options` in CMakeLists.txt 
-2. comment  `target_sources` with `syscall.c` in CMakeLists.txt 
-3. Include header `stdio.h` in the source file and add `initialize_monitor_handle();` before while loop
-4. Now printf should work. The printed out message is shown in **OUTPUT** panel  
-  
-ps. If you enable semihosting here, be aware that, the device will hang due to monitor_handle and will not start at all, unless you use debugger to run. So, if you want to test you program without debugger, remember to remove `initialize_monitor_handle();` and `printf` as well as revert the CMakeLists.txt
-
-For CMake version before 3.14 use the following setting in CMakeLists.txt  
-```CMake   
-set_property(TARGET ${CMAKE_PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -specs=rdimon.specs -lc -lrdimon")  
-```  
-
-# Using cmake from CLI
-```
-cmake 
-  -DCMAKE_TOOLCHAIN_FILE=/usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake \
-  -DSTM32Cube_DIR=/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.25.2 \
-  ..
-```
 
 # Note  
 - C/C++ intellisense (ms-vscode.cpptools) v0.30.0-insider Bug [#5906](https://github.com/microsoft/vscode-cpptools/issues/5906)
