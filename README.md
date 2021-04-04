@@ -140,6 +140,14 @@ For CMake version before 3.14 use the following setting in CMakeLists.txt
 set_property(TARGET ${CMAKE_PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -specs=rdimon.specs -lc -lrdimon")  
 ```  
 
+# Using cmake from CLI
+```
+cmake 
+  -DCMAKE_TOOLCHAIN_FILE=/usr/local/src/stm32-cmake/cmake/gcc_stm32.cmake \
+  -DSTM32Cube_DIR=/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.25.2 \
+  ..
+```
+
 # Note  
 - C/C++ intellisense (ms-vscode.cpptools) v0.30.0-insider Bug [#5906](https://github.com/microsoft/vscode-cpptools/issues/5906)
     It will fail autocomplete, you can use disable extension autoupdate and use version 0.29.0. It might be bug from CMakeTool.

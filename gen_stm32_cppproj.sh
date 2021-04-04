@@ -11,10 +11,10 @@ fi
 proj_name=${PWD##*/}
 mkdir $proj_name
 
-mv Inc include
-mv Src src
-mv src/main.c src/main.cpp
-mv Startup $proj_name/
+mv Core/Inc include
+mv Core/Src src
+mv Core/Src/main.c src/main.cpp
+mv Core/Startup $proj_name/
 mv Drivers $proj_name/
 mv ./.* $proj_name/
 mv *.ioc $proj_name/
