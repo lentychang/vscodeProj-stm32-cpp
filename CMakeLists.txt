@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
-PROJECT(vscodeProj-stm32-cpp C CXX ASM)
+PROJECT(blink C CXX ASM)
 
 
 # This is for lazy configuration to use cmake from CLI
@@ -67,13 +67,13 @@ TARGET_INCLUDE_DIRECTORIES(
 )
 
 # For Semihosting comment below and also uncomment target_link_options
-TARGET_SOURCES(${CMAKE_PROJECT_NAME}
-    PRIVATE
-    src/syscalls.c
-)
-# target_link_options(${CMAKE_PROJECT_NAME} PUBLIC "-specs=rdimon.specs" 
-#                                                  "-lc" 
-#                                                  "-lrdimon")
+# TARGET_SOURCES(${CMAKE_PROJECT_NAME}
+#     PRIVATE
+#     src/syscalls.c
+# )
+target_link_options(${CMAKE_PROJECT_NAME} PUBLIC "-specs=nosys.specs -specs=nano.specs" 
+                                                 "-lc" 
+                                                 "-lrdimon")
 
 STM32_SET_TARGET_PROPERTIES(${CMAKE_PROJECT_NAME})
 STM32_ADD_HEX_BIN_TARGETS(${CMAKE_PROJECT_NAME})
