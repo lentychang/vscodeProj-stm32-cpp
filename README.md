@@ -34,14 +34,23 @@ Please modify according to the path you installed these tools
     - [Download](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads) desired version  
     - Extract to `/usr/local/`  
 
-3. Modify the configuration files for VS Code  
+3. Install STM32 Libraries from STM32CubeMX
+    - Home(Main Page)/ Install or remove embedded software packages/ STM32Cub MCU Package / STM32F4 / Install
+    - Where can we find the installed package?
+      Dropdown Menu / Help / Update Settings / Repository Folder
+
+4. Modify the configuration files for VS Code  
     All json files are in `/usr/local/src/vscodeProj-stm32-cpp/.vscode`
 
 
-# 1. Configuration
+# 1. VS Code Configuration
 1. `settings.json`    
     Please update the shown values below. Example below is only partly shown.    
-    Here we configure CMakeTools and cortex-debug extension.     
+    Here we configure CMakeTools and cortex-debug extension. 
+    
+    **(optional)** Custom linker script  
+    Add `"STM32_LINKER_SCRIPT":"${workspaceFolder}/STM32F446RETX_FLASH.ld"` to `"cmake.configureSettings"`
+    But it will produce warning, which is not yet solved.  
     ```json
     {
     "cmake.generator": "Unix Makefiles",
@@ -51,8 +60,7 @@ Please modify according to the path you installed these tools
         "STM32_TARGET_TRIPLET":"arm-none-eabi",
         "STM32_CHIP": "STM32F446RE",
         "STM32Cube_DIR":"/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.26.1",
-        "STM32_CUBE_F4_PATH":"/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.26.1",
-        "STM32_LINKER_SCRIPT":"${workspaceFolder}/STM32F446RETX_FLASH.ld"
+        "STM32_CUBE_F4_PATH":"/opt/STM32Cube/Repository/STM32Cube_FW_F4_V1.26.1"
     },
     "cortex-debug.armToolchainPath": "/usr/local/gcc-arm-none-eabi-9-2020-q2-update/bin",
     "cortex-debug.openocdPath": "/usr/local/bin/openocd"
@@ -110,10 +118,10 @@ Please modify according to the path you installed these tools
     ```
 
 # 2. Update CMakeLists.txt
-1. Find corresponded targets from HAL and CMSIS that need to be linked.
+1. Add corresponded targets from HAL and CMSIS that need to be linked.
 
 # Semihosting  
-If you want to use printf to print message on host's terminal, or scanf from host's keyboard.  
+If you want to use printf to print message on host's terminal, or scanf from host's keyboard. 
    
 0. enabling semihosting in openocd has been done in the launch.json (line25: `monitor arm semihosting enable`).  You can remove it if you don't need semihosting.  
 1. uncomment `target_link_options` in CMakeLists.txt 
@@ -129,8 +137,8 @@ set_property(TARGET ${CMAKE_PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -s
 ```  
 
 ---
-# Old Configuration - If config with STM32CubeMX
-# Convert STM32CubeIDE project to VS Code CMake project
+# Old Configuration - If you config with STM32CubeMX
+## Convert STM32CubeIDE project to VS Code CMake project
 1. Use STM32CubeMX to generate STM32CubeIDE proejct  
     If you select other type of projects, you have to modify gen_stm32_cppproj.sh to remove corresponding project files.
 2. Now you can execute `gen_stm32_cppproj` from CLI at the root directory of your STM32CubeMX_generated_project. It renames directories and removes unnecessary files.
@@ -142,7 +150,7 @@ set_property(TARGET ${CMAKE_PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -s
 3. Relauch vscode, open Command Pallette, choose `CMake: Select a kit`, then it should automatically configure.
 4. After flashing the code and restart your target, LED should blink after press user_button.
 
-# Manually Setup from stm32-cmake   
+## Manually Setup from stm32-cmake   
 If you don't want to use this repository, here are some steps to use stm32-cmake directly   
 
 0. Install required tools and VS Code extensions  
